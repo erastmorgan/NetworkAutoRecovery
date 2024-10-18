@@ -30,11 +30,14 @@ namespace NetworkAutoRecovery
         public async Task<bool> ReconnectNetwork(string networkNamePattern, int recconnectNetworkSpeedMbps)
         {
             var networkInterface = SearchForNetworkByNetworkName(networkNamePattern);
+            if (networkInterface == null)
+            {
+                return false;
+            }
 
             LogInfo(networkInterface.ToString());
 
-            if (networkInterface != null
-                && networkInterface.SpeedMbps < recconnectNetworkSpeedMbps)
+            if (networkInterface.SpeedMbps < recconnectNetworkSpeedMbps)
             {
                 if (await DisableAdapter(networkInterface.Name, 10000))
                 {
