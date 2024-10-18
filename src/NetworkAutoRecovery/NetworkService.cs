@@ -61,7 +61,7 @@ namespace NetworkAutoRecovery
                 Regex.IsMatch(networkInterface.Name, interfaceNamePattern));
         }
 
-        private NetworkInterfaceInfo SearchForNetwork(Func<NetworkInterface, Network, bool> searchPredicate)
+        private NetworkInterfaceInfo SearchForNetwork(Func<NetworkInterface, Network, bool> searchForNetwork)
         {
             var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
             var networks = NetworkListManager.GetNetworks(NetworkConnectivityLevels.All);
@@ -72,7 +72,7 @@ namespace NetworkAutoRecovery
                     network.Connections.Any(connection =>
                         connection.AdapterId == Guid.Parse(networkInterface.Id)));
 
-                if (!searchPredicate(networkInterface, network))
+                if (!searchForNetwork(networkInterface, network))
                 {
                     continue;
                 }
